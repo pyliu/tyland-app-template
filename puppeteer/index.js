@@ -77,7 +77,8 @@ const doJob = async () => {
     // `headless: false` enables “headful” mode.
     slowMo: 250, // slow down by 250ms
     defaultViewport: null,
-    args: ['--window-size=1280,800']
+    args: ['--window-size=1280,800'],
+    executablePath: config.parsed.executablePath
   });
   const page = await browser.newPage();
   // await page.goto('https://www.google.com.tw');
