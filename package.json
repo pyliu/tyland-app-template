@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "tyland-app",
+  "description": "My application description",
+  "version": "1.0.0",
+  "author": "Shiono Yoshihide <shiono.yoshihide@gmail.com>",
+  "main": "app/background.js",
+  "scripts": {
+    "dev": "nuxtron",
+    "build": "nuxtron build"
+  },
+  "dependencies": {
+    "electron-serve": "^1.0.0",
+    "electron-store": "^6.0.1"
+  },
+  "devDependencies": {
+    "electron": "^10.1.5",
+    "electron-builder": "^22.9.1",
+    "nuxt": "^2.14.7",
+    "nuxtron": "^0.3.1"
+  }
+}
