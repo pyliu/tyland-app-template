@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "tyland-app",
-  "description": "My application description",
+  "description": "My personal used tyland app",
   "version": "1.0.0",
-  "author": "Shiono Yoshihide <shiono.yoshihide@gmail.com>",
+  "author": "pang yu liu <pangyu.liu@gmail.com>",
   "main": "app/background.js",
   "scripts": {
     "dev": "nuxtron",
