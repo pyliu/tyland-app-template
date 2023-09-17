@@ -1,6 +1,34 @@
-node_modules
+### Node template
+# Logs
+/logs
 *.log
-.nuxt
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
 .env
+
+# nuxt.js build output
+.nuxt
 app
 dist
+
+# lock files
+*.lock
