@@ -4,6 +4,11 @@ const path = require('path');
 const schedule = require('node-schedule');
 const puppeteer = require('puppeteer');
 const readline = require('readline');
+const isEmpty = require('lodash/isEmpty');
+
+const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+let todayAttendanceTime = '';
 
 const isProd = process.env.NODE_ENV === 'production';
 const notifier = require('node-notifier');
@@ -84,56 +89,58 @@ const doJob = async () => {
   const page = await browser.newPage();
   // go to the URL
   await page.goto('https://webitr.tycg.gov.tw/WebITR/');
-  const pageTarget = page.target();
   await page.waitForNetworkIdle({
     idleTime: 1000,
     timeout: 5000
   });
   await page.type('#userName', config.parsed.user);
   await page.type('#login_key', config.parsed.pass);
-  await page.screenshot({path: 'login.png'});
+  // login
   await page.click('button#sendBtn');
-  // await page.pdf({path: 'google.pdf'});
   await page.waitForNavigation();
   await page.waitForSelector('div.navsystem')
-  await page.screenshot({path: 'main.png'});
+  // get today's attendance time text
+  const weekday = new Date().getDay();
+  const grabSelector = `#tbl_attendance > tbody > tr:nth-child(${weekday + 1}) > td:nth-child(${weekday + 1}) > div`;
+  todayAttendanceTime = await page.$eval(grabSelector, el => el.textContent);
+  console.log(`Today attendance time 👉 ${todayAttendanceTime}`);
+  if (isEmpty(todayAttendanceTime)) {
+    registerOn(browser, page);
+  }
+  await browser.close();
+}
+
+const registerOn = async (browser, page) => {
+  const pageTarget = page.target();
   // will go to another page(tab)
   await page.click('button#attendanceCardButton');
-  // fin new opened page
+  // find new opened page
   const newTarget = await browser.waitForTarget(
     (target) => target.opener() === pageTarget
   )
-  const attendanceCardPage = await newTarget.page()
-  console.log(`wait 👉 #showbox`);
-  await attendanceCardPage.waitForSelector('#showbox');
-  // console.log(resolved);
-  // //*[@id="search_keyword"]
-  // use the tabs Page objects properly
-  // console.log("Tab Two Title ",await tabTwo.title());
-  await attendanceCardPage.screenshot({path: 'attendanceCardPage.png'});
-  // #showbox
-  const nowTs = await attendanceCardPage.$eval('#showbox', el => el.textContent);
-  // const inputsBtns = await tabTwo.$$eval('#cardbtnArea > input', inputs => {
-  //   return inputs.map(input => input)
-  // })
-  console.warn(nowTs);
+  const attendanceCardPage = await newTarget.page();
+
+  // await attendanceCardPage.waitForSelector('#showbox');
+  // const nowTs = await attendanceCardPage.$eval('#showbox', el => el.textContent);
+  // console.warn(nowTs);
   
-  await attendanceCardPage.waitForSelector('#cardbtnArea');
-  const result = await attendanceCardPage.evaluate(() => {
-    let data = []; // Create an empty array that will store our data
-    let elements = document.querySelectorAll('#cardbtnArea > input'); // Select all Products
+  await attendanceCardPage.waitForSelector('#cardbtnArea > input:nth-child(1)');
+  await attendanceCardPage.click('#cardbtnArea > input:nth-child(1)');
+  await await delay(2000);
+  // const result = await attendanceCardPage.evaluate(() => {
+  //   let data = []; // Create an empty array that will store our data
+  //   let elements = document.querySelectorAll('#cardbtnArea > input'); // Select all Products
 
-    for (var element of elements) { // Loop through each proudct
-      let v = element.value; // Select the title
-      data.push({ element, v }); // Push an object with the data onto our array
-    }
+  //   for (var element of elements) { // Loop through each proudct
+  //     let v = element.value; // Select the title
+  //     data.push({ element, v }); // Push an object with the data onto our array
+  //   }
 
-    return data; // Return our data array
-  });
+  //   return data; // Return our data array
+  // });
 
-  console.warn(result);
+  // console.warn(result);
 
-  await browser.close();
 }
 
 (async () => {
