@@ -3,6 +3,9 @@ import serve from 'electron-serve';
 import {
   createWindow,
   exitOnChange,
+  notifier,
+  notify,
+  notifyDebounced
 } from './helpers';
 
 const isProd = process.env.NODE_ENV === 'production';
