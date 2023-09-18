@@ -10,6 +10,39 @@ const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, mil
 
 let todayAttendanceTime = '';
 
+const CEHCK_TYPE_IDX = {
+  IN: 1,
+  OUT: 2,
+  OIN: 3, // Overtime
+  OOUT: 4 // Overtime
+};
+
+const findNewOpenedPage = async (browser, currentPage) => {
+  const pageTarget = page.target();
+  // find new opened page
+  const newTarget = await browser.waitForTarget(
+    (target) => target.opener() === pageTarget
+  )
+  return await newTarget.page();
+}
+
+const hitCheckButton = async (browser, page, index) => {
+  // will go to another page(tab)
+  await page.click('button#attendanceCardButton');
+  // find new opened page
+  const attendanceCardPage = findNewOpenedPage(browser, page);
+  
+  // TODO: find the timer text and return after delay(2000)
+
+  // locate the target button
+  const selector = `#cardbtnArea > input:nth-child(${index})`;
+  await attendanceCardPage.waitForSelector(selector);
+  await attendanceCardPage.click(selector);
+  // wait sometime before close
+  await delay(2000);
+}
+
+
 const isProd = process.env.NODE_ENV === 'production';
 const notifier = require('node-notifier');
 const reToastDelay = 5000;
@@ -18,7 +51,7 @@ const iconPath = path.join(__dirname, 'bell.png');
 const notify = function (message, title, callback) {
   notifier.notify(
     {
-      appID: 'private.work.tycg.app',
+      appID: 'private.work.pyliu.app',
       title: title,
       message: message,
       icon: iconPath, // Absolute path (doesn't work on balloons)
@@ -45,7 +78,11 @@ const ask  = () => {
       console.log('Skip the operation!')
     } else {
       // user clicked the toast!
-      doJob();
+      // 1. check in
+      checkIN();
+      // 2. check out/oin
+      // 3. check oout
+
       // const rl = readline.createInterface({
       //   input: process.stdin,
       //   output: process.stdout,
@@ -67,15 +104,15 @@ const ask  = () => {
       //   // └───────────────────────── second (0 - 59, OPTIONAL)
       //   const cronConfig = '15 * * * * 0-7'
       //   console.log(`啟動排程 ${cronConfig}`)
-      //   schedule.scheduleJob(cronConfig, doJob);
+      //   schedule.scheduleJob(cronConfig, checkOUTOOUT);
       //   rl.close();
       // });
     }
   });
 }
 
-const doJob = async () => {
-  console.log('scheduled job started.')
+const checkIN = async () => {
+  console.log('check-in job started.')
   const browser = await puppeteer.launch({
     headless: false,
     // `headless: true` (default) enables old Headless;
@@ -101,54 +138,15 @@ const doJob = async () => {
   await page.waitForSelector('div.navsystem')
   // get today's attendance time text
   const weekday = new Date().getDay();
-  const grabSelector = `#tbl_attendance > tbody > tr:nth-child(${weekday + 1}) > td:nth-child(${weekday + 1}) > div`;
-  todayAttendanceTime = await page.$eval(grabSelector, el => el.textContent);
+  const todayTimeSelector = `#tbl_attendance > tbody > tr:nth-child(${weekday + 1}) > td:nth-child(${weekday + 1}) > div`;
+  todayAttendanceTime = await page.$eval(todayTimeSelector, el => el.textContent);
   console.log(`Today attendance time 👉 ${todayAttendanceTime}`);
   if (isEmpty(todayAttendanceTime)) {
-    registerOn(browser, page);
+    hitCheckButton(browser, page, CEHCK_TYPE_IDX.IN);
   }
   await browser.close();
 }
 
-const findNewOpenedPage = async (browser, currentPage) => {
-  const pageTarget = page.target();
-  // find new opened page
-  const newTarget = await browser.waitForTarget(
-    (target) => target.opener() === pageTarget
-  )
-  return await newTarget.page();
-}
-
-const registerOn = async (browser, page) => {
-  // will go to another page(tab)
-  await page.click('button#attendanceCardButton');
-  // find new opened page
-  const attendanceCardPage = findNewOpenedPage(browser, page);
-
-  // await attendanceCardPage.waitForSelector('#showbox');
-  // const nowTs = await attendanceCardPage.$eval('#showbox', el => el.textContent);
-  // console.warn(nowTs);
-  
-  await attendanceCardPage.waitForSelector('#cardbtnArea > input:nth-child(1)');
-  await attendanceCardPage.click('#cardbtnArea > input:nth-child(1)');
-  await delay(2000);
-  // const result = await attendanceCardPage.evaluate(() => {
-  //   let data = []; // Create an empty array that will store our data
-  //   let elements = document.querySelectorAll('#cardbtnArea > input'); // Select all Products
-
-  //   for (var element of elements) { // Loop through each proudct
-  //     let v = element.value; // Select the title
-  //     data.push({ element, v }); // Push an object with the data onto our array
-  //   }
-
-  //   return data; // Return our data array
-  // });
-
-  // console.warn(result);
-
-}
-
 (async () => {
   ask();
-  // doJob();
 })();
