@@ -110,15 +110,20 @@ const doJob = async () => {
   await browser.close();
 }
 
-const registerOn = async (browser, page) => {
+const findNewOpenedPage = async (browser, currentPage) => {
   const pageTarget = page.target();
-  // will go to another page(tab)
-  await page.click('button#attendanceCardButton');
   // find new opened page
   const newTarget = await browser.waitForTarget(
     (target) => target.opener() === pageTarget
   )
-  const attendanceCardPage = await newTarget.page();
+  return await newTarget.page();
+}
+
+const registerOn = async (browser, page) => {
+  // will go to another page(tab)
+  await page.click('button#attendanceCardButton');
+  // find new opened page
+  const attendanceCardPage = findNewOpenedPage(browser, page);
 
   // await attendanceCardPage.waitForSelector('#showbox');
   // const nowTs = await attendanceCardPage.$eval('#showbox', el => el.textContent);
