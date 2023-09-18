@@ -6,6 +6,9 @@ import {
 } from './helpers';
 
 const isProd = process.env.NODE_ENV === 'production';
+// current executable file path
+const exePath = app.getPath('exe');
+// TODO: load config file ...
 
 if (isProd) {
   serve({ directory: 'app' });
