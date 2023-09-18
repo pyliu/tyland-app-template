@@ -126,7 +126,7 @@ const registerOn = async (browser, page) => {
   
   await attendanceCardPage.waitForSelector('#cardbtnArea > input:nth-child(1)');
   await attendanceCardPage.click('#cardbtnArea > input:nth-child(1)');
-  await await delay(2000);
+  await delay(2000);
   // const result = await attendanceCardPage.evaluate(() => {
   //   let data = []; // Create an empty array that will store our data
   //   let elements = document.querySelectorAll('#cardbtnArea > input'); // Select all Products
