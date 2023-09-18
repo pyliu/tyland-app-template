@@ -40,30 +40,31 @@ const ask  = () => {
       console.log('Skip the operation!')
     } else {
       // user clicked the toast!
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
+      doJob();
+      // const rl = readline.createInterface({
+      //   input: process.stdin,
+      //   output: process.stdout,
+      // });
     
-      await rl.question('minutes? ', (ans) => {
-        config.parsed.min = ans;
-        console.warn(config);
-        // Cron-style Scheduling
-        // The cron format consists of:
-        // *    *    *    *    *    *
-        // ┬    ┬    ┬    ┬    ┬    ┬
-        // │    │    │    │    │    │
-        // │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
-        // │    │    │    │    └───── month (1 - 12)
-        // │    │    │    └────────── day of month (1 - 31)
-        // │    │    └─────────────── hour (0 - 23)
-        // │    └──────────────────── minute (0 - 59)
-        // └───────────────────────── second (0 - 59, OPTIONAL)
-        const cronConfig = '15 * * * * 0-7'
-        console.log(`啟動排程 ${cronConfig}`)
-        schedule.scheduleJob(cronConfig, doJob);
-        rl.close();
-      });
+      // await rl.question('minutes? ', (ans) => {
+      //   config.parsed.min = ans;
+      //   console.warn(config);
+      //   // Cron-style Scheduling
+      //   // The cron format consists of:
+      //   // *    *    *    *    *    *
+      //   // ┬    ┬    ┬    ┬    ┬    ┬
+      //   // │    │    │    │    │    │
+      //   // │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
+      //   // │    │    │    │    └───── month (1 - 12)
+      //   // │    │    │    └────────── day of month (1 - 31)
+      //   // │    │    └─────────────── hour (0 - 23)
+      //   // │    └──────────────────── minute (0 - 59)
+      //   // └───────────────────────── second (0 - 59, OPTIONAL)
+      //   const cronConfig = '15 * * * * 0-7'
+      //   console.log(`啟動排程 ${cronConfig}`)
+      //   schedule.scheduleJob(cronConfig, doJob);
+      //   rl.close();
+      // });
     }
   });
 }
@@ -75,37 +76,63 @@ const doJob = async () => {
     // `headless: true` (default) enables old Headless;
     // `headless: 'new'` enables new Headless;
     // `headless: false` enables “headful” mode.
-    slowMo: 250, // slow down by 250ms
+    slowMo: 150, // slow down by 250ms
     defaultViewport: null,
     args: ['--window-size=1280,800'],
     executablePath: config.parsed.executablePath
   });
   const page = await browser.newPage();
-  // await page.goto('https://www.google.com.tw');
-  // await page.screenshot({path: 'google.png'});
-  // await page.pdf({path: 'google.pdf'});
   // go to the URL
-  await page.goto('https://news.google.com/home?hl=zh-TW&gl=TW&ceid=TW:zh-Hant');
-  const [response] = await Promise.all([
-    page.waitForNetworkIdle({
-      idleTime: 1000,
-      timeout: 5000
-    }),
-    page.click('div.XlKvRb > a'),
-  ]);
-  // you can make this as dynamic as well depends on the website and use case.
-  const [tabOne, tabTwo] = (await browser.pages());
-  // console.log(tabOne, tabTwo);
-  // use the tabs Page objects properly
-  console.log("Tab One Title ",await tabOne.title());
-  const resolved = await tabTwo.waitForNetworkIdle({
+  await page.goto('https://webitr.tycg.gov.tw/WebITR/');
+  const pageTarget = page.target();
+  await page.waitForNetworkIdle({
     idleTime: 1000,
     timeout: 5000
   });
-  console.log(resolved);
+  await page.type('#userName', config.parsed.user);
+  await page.type('#login_key', config.parsed.pass);
+  await page.screenshot({path: 'login.png'});
+  await page.click('button#sendBtn');
+  // await page.pdf({path: 'google.pdf'});
+  await page.waitForNavigation();
+  await page.waitForSelector('div.navsystem')
+  await page.screenshot({path: 'main.png'});
+  // will go to another page(tab)
+  await page.click('button#attendanceCardButton');
+  // fin new opened page
+  const newTarget = await browser.waitForTarget(
+    (target) => target.opener() === pageTarget
+  )
+  const attendanceCardPage = await newTarget.page()
+  console.log(`wait 👉 #showbox`);
+  await attendanceCardPage.waitForSelector('#showbox');
+  // console.log(resolved);
   // //*[@id="search_keyword"]
   // use the tabs Page objects properly
-  console.log("Tab Two Title ",await tabTwo.title());
+  // console.log("Tab Two Title ",await tabTwo.title());
+  await attendanceCardPage.screenshot({path: 'attendanceCardPage.png'});
+  // #showbox
+  const nowTs = await attendanceCardPage.$eval('#showbox', el => el.textContent);
+  // const inputsBtns = await tabTwo.$$eval('#cardbtnArea > input', inputs => {
+  //   return inputs.map(input => input)
+  // })
+  console.warn(nowTs);
+  
+  await attendanceCardPage.waitForSelector('#cardbtnArea');
+  const result = await attendanceCardPage.evaluate(() => {
+    let data = []; // Create an empty array that will store our data
+    let elements = document.querySelectorAll('#cardbtnArea > input'); // Select all Products
+
+    for (var element of elements) { // Loop through each proudct
+      let v = element.value; // Select the title
+      data.push({ element, v }); // Push an object with the data onto our array
+    }
+
+    return data; // Return our data array
+  });
+
+  console.warn(result);
+
   await browser.close();
 }
 
