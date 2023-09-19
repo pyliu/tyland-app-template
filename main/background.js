@@ -1,17 +1,35 @@
 import { app } from 'electron';
 import serve from 'electron-serve';
+
+const path = require('path')
+const qs = require('qs');
+const axios = require('axios')
+// required for PHP backend
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+
 import {
   createWindow,
   exitOnChange,
-  notifier,
-  notify,
-  notifyDebounced
+  notify
 } from './helpers';
 
 const isProd = process.env.NODE_ENV === 'production';
 // current executable file path
 const exePath = app.getPath('exe');
 // TODO: load config file ...
+notify(exePath);
+console.log('exePath', exePath);
+
+let mainWindow = null;
+let tray = null;
+
+const closeApp = function () {
+  tray && tray.destroy();
+  app.isQuiting = true;
+  // send to renderer process
+  mainWindow && mainWindow.webContents.send('quit');
+  app.quit();
+}
 
 if (isProd) {
   serve({ directory: 'app' });
@@ -35,8 +53,7 @@ if (isProd) {
     await mainWindow.loadURL(`http://localhost:${port}/home`);
     mainWindow.webContents.openDevTools();
   }
+  // notify('TEST', );
 })();
 
-app.on('window-all-closed', () => {
-  app.quit();
-});
+app.on('window-all-closed', closeApp);
