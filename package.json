@@ -10,8 +10,13 @@
     "build": "nuxtron build"
   },
   "dependencies": {
+    "axios": "^1.5.0",
     "electron-serve": "^1.0.0",
-    "electron-store": "^6.0.1"
+    "electron-store": "^6.0.1",
+    "lodash": "^4.17.21",
+    "node-notifier": "^10.0.1",
+    "puppeteer": "^21.2.1",
+    "qs": "^6.11.2"
   },
   "devDependencies": {
     "electron": "^26.2.1",
