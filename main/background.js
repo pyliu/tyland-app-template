@@ -24,10 +24,10 @@ let mainWindow = null;
 let tray = null;
 
 const closeApp = function () {
+  // send to renderer process
+  mainWindow && mainWindow?.webContents.send('quit');
   tray && tray.destroy();
   app.isQuiting = true;
-  // send to renderer process
-  mainWindow && mainWindow.webContents.send('quit');
   app.quit();
 }
 
