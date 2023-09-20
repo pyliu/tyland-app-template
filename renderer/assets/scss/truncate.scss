@@ -1,0 +1,12 @@
+@mixin truncateBase() {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .truncate {
+    @include truncateBase();
+    p {
+      margin-bottom: 0px !important;
+    }
+  }

@@ -1,0 +1,17 @@
+@mixin shadow-level($first, $second, $opacity) {
+    -webkit-filter: drop-shadow($first $first $second rgba(0, 0, 0, $opacity));
+    filter: drop-shadow($first $first $second rgba(0, 0, 0, $opacity))
+}
+
+
+.lah-shadow-xl {
+    @include shadow-level(9px, 10.5px, 0.7)
+  }
+
+.lah-shadow {
+  @include shadow-level(6px, 7px, 0.7)
+}
+
+.lah-shadow-sm {
+    @include shadow-level(3px, 3.5px, 0.7)
+}
