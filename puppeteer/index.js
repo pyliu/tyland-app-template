@@ -1,7 +1,6 @@
 const config = require('dotenv').config();
 const path = require('path');
 const puppeteer = require('puppeteer');
-const readline = require('readline');
 const isEmpty = require('lodash/isEmpty');
 
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -33,7 +32,7 @@ const hitCheckButton = async (browser, page, index) => {
   const selector = `#cardbtnArea > input:nth-child(${index})`;
   await attendanceCardPage.waitForSelector(selector);
   await attendanceCardPage.click(selector);
-  // TODO: find the timer text
+  // find the timer text
   const tmp = await attendanceCardPage.$eval('#showbox', el => el.textContent);
   if (isEmpty(tmp)) {
     console.warn('Can\'t find #showbox text');
@@ -86,31 +85,6 @@ const ask  = () => {
       checkIN();
       // 2. check out/oin
       // 3. check oout
-
-      // const rl = readline.createInterface({
-      //   input: process.stdin,
-      //   output: process.stdout,
-      // });
-    
-      // await rl.question('minutes? ', (ans) => {
-      //   config.parsed.min = ans;
-      //   console.warn(config);
-      //   // Cron-style Scheduling
-      //   // The cron format consists of:
-      //   // *    *    *    *    *    *
-      //   // ┬    ┬    ┬    ┬    ┬    ┬
-      //   // │    │    │    │    │    │
-      //   // │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
-      //   // │    │    │    │    └───── month (1 - 12)
-      //   // │    │    │    └────────── day of month (1 - 31)
-      //   // │    │    └─────────────── hour (0 - 23)
-      //   // │    └──────────────────── minute (0 - 59)
-      //   // └───────────────────────── second (0 - 59, OPTIONAL)
-      //   const cronConfig = '15 * * * * 0-7'
-      //   console.log(`啟動排程 ${cronConfig}`)
-      //   schedule.scheduleJob(cronConfig, checkOUTOOUT);
-      //   rl.close();
-      // });
     }
   });
 }

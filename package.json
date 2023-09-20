@@ -28,6 +28,7 @@
     "electron-store": "^6.0.1",
     "lodash": "^4.17.21",
     "node-notifier": "^10.0.1",
+    "node-schedule": "^2.1.1",
     "puppeteer": "^21.2.1",
     "qs": "^6.11.2"
   },
