@@ -7,7 +7,12 @@
   "main": "app/background.js",
   "scripts": {
     "dev": "nuxtron",
-    "build": "nuxtron build"
+    "build": "nuxtron build",
+    "build:all": "nuxtron build --all",
+    "build:win32": "nuxtron build --win --ia32",
+    "build:win64": "nuxtron build --win --x64",
+    "build:mac": "nuxtron build --mac --x64",
+    "build:linux": "nuxtron build --linux"
   },
   "dependencies": {
     "axios": "^1.5.0",
