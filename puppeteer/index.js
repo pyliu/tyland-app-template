@@ -101,7 +101,7 @@ const doJob = async () => {
   await page.waitForSelector('div.navsystem')
   // get today's attendance time text
   const weekday = new Date().getDay();
-  const grabSelector = `#tbl_attendance > tbody > tr:nth-child(${weekday + 1}) > td:nth-child(${weekday + 1}) > div`;
+  const grabSelector = `#tbl_attendance > tbody > tr:nth-child(${weekday + 1}) > td:nth-child(2)`;
   todayAttendanceTime = await page.$eval(grabSelector, el => el.textContent);
   console.log(`Today attendance time 👉 ${todayAttendanceTime}`);
   if (isEmpty(todayAttendanceTime)) {
