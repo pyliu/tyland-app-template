@@ -31,15 +31,21 @@ const hitCheckButton = async (browser, page, index) => {
   await page.click('button#attendanceCardButton');
   // find new opened page
   const attendanceCardPage = findNewOpenedPage(browser, page);
-  
-  // TODO: find the timer text and return after delay(2000)
-
   // locate the target button
   const selector = `#cardbtnArea > input:nth-child(${index})`;
   await attendanceCardPage.waitForSelector(selector);
   await attendanceCardPage.click(selector);
+  // TODO: find the timer text
+  const tmp = await attendanceCardPage.$eval('#showbox', el => el.textContent);
+  if (isEmpty(tmp)) {
+    console.warn('Can\'t find #showbox text');
+  } else {
+    const parts = tmp.split(':');
+    todayAttendanceTime = `${parts[0]}:${parts[1]}`
+    console.log(`Check-In time 👉 ${todayAttendanceTime}`);
+  }
   // wait sometime before close
-  await delay(2000);
+  await delay(5000);
 }
 
 
@@ -118,7 +124,7 @@ const checkIN = async () => {
     // `headless: true` (default) enables old Headless;
     // `headless: 'new'` enables new Headless;
     // `headless: false` enables “headful” mode.
-    slowMo: 150, // slow down by 250ms
+    slowMo: 100, // slow down by 100ms
     defaultViewport: null,
     args: ['--window-size=1280,800'],
     executablePath: config.parsed.executablePath
