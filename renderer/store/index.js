@@ -23,8 +23,6 @@ const timestamp = (full = false) => {
 
 const state = () => ({
   windowVisible: false,
-  history: 10,
-  fetchingHistory: false,
   websocket: undefined,
   timer: null
 })
@@ -32,9 +30,7 @@ const state = () => ({
 const getters = {
   windowVisible: state => state.windowVisible,
   websocket: state => state.websocket,
-  timer: state => state.timer,
-  history: state => parseInt(state.history),
-  fetchingHistory: state => state.fetchingHistory
+  timer: state => state.timer
 }
 
 // only sync operation
@@ -46,12 +42,6 @@ const mutations = {
   },
   timer (state, timer) {
     state.timer = timer
-  },
-  history (state, history) {
-    state.history = parseInt(history)
-  },
-  fetchingHistory (state, flag) {
-    state.fetchingHistory = flag
   }
 }
 
