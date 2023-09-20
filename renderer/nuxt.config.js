@@ -42,23 +42,14 @@ export default {
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     // https://animate.style/
-    'animate.css/animate.css',
-    // https://github.com/loadingio/loading.css
-    '~/assets/css/loading.min.css',
-    '~/assets/css/loading-btn.css',
-    // https://github.com/loadingio/transition.css/
-    // '~/assets/css/transition.min.css',
-    '~/assets/scss/main.scss'
+    'animate.css/animate.css'
   ],
   purgeCSS: {
     whitelistPatterns: [/svg.*/, /fa.*/]
   },
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    { src: '~/plugins/axios'},
-    { src: '~/plugins/global-init'},
-    { src: '~/plugins/global-vue-mixin'},
-    { src: '~/plugins/test'},
+    { src: '~/plugins/axios'}
   ],
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -91,16 +82,16 @@ export default {
     debug: false
   },
   proxy: {
-    '/api': {
-      target: `${process.env.PROTOCOL}://${process.env.API_HOST}:${process.env.API_PORT}`,
-      changeOrigin: true
-      // pathRewrite: { '^/api': '' }
-    },
-    '/img': {
-      target: `${process.env.PROTOCOL}://${process.env.API_HOST}:${process.env.API_PORT}`,
-      changeOrigin: true,
-      pathRewrite: { '^/img': '' }
-    }
+    // '/api': {
+    //   target: `${process.env.PROTOCOL}://${process.env.API_HOST}:${process.env.API_PORT}`,
+    //   changeOrigin: true
+    //   // pathRewrite: { '^/api': '' }
+    // },
+    // '/img': {
+    //   target: `${process.env.PROTOCOL}://${process.env.API_HOST}:${process.env.API_PORT}`,
+    //   changeOrigin: true,
+    //   pathRewrite: { '^/img': '' }
+    // }
   },
   // should hold all env variables that are public as these will be exposed on the frontend.
   // available using $config in both server and client.

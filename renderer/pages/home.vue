@@ -1,14 +1,10 @@
-<template>
-  <div class="container">
-    <img src="/nuxt.png">
-    <h2>Hello Nuxtron.</h2>
-    <p>Loaded from the {{ name }}</p>
-    <p>
-      <NuxtLink to="/about">
-        About
-      </NuxtLink>
-    </p>
-  </div>
+<template lang="pug">
+.container
+  img(src="/nuxt.png")
+  h2 Hello Nuxtron.
+  p Loaded from the {{ name }}
+  p
+    nuxt-link(to="/about") About
 </template>
 
 <script>
