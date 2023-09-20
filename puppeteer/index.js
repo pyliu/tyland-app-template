@@ -1,7 +1,5 @@
 const config = require('dotenv').config();
 const path = require('path');
-// https://www.npmjs.com/package/node-schedule
-const schedule = require('node-schedule');
 const puppeteer = require('puppeteer');
 const readline = require('readline');
 const isEmpty = require('lodash/isEmpty');
@@ -18,7 +16,7 @@ const CEHCK_TYPE_IDX = {
 };
 
 const findNewOpenedPage = async (browser, currentPage) => {
-  const pageTarget = page.target();
+  const pageTarget = currentPage.target();
   // find new opened page
   const newTarget = await browser.waitForTarget(
     (target) => target.opener() === pageTarget
