@@ -29,7 +29,7 @@ const findNewOpenedPage = async (browser, currentPage) => {
 const findNowClockTimeArray = async (page) => {
   const text = await page.$eval('#showbox', el => el.textContent);
   // record current time in hour/min parts
-  // array, 0 👉 hour, 1 👉 minute
+  // array, 0 => hour, 1 => minute
   return isEmpty(text) ? [] : text?.trim().split(':');
 }
 
@@ -41,7 +41,7 @@ const hitCheckButton = async (browser, page, index) => {
   // find the timer text
   let times = findNowClockTimeArray(attendanceCardPage);
   const currentTime = `${times[0]}:${times[1]}`;
-  console.log(`Current time 👉 ${currentTime}`);
+  console.log(`Current time => ${currentTime}`);
   if (times.length !== 2 || currentTime.length !== 5) {
     console.warn(`Can't find #showbox text string length is not 5. (expect XX:XX, got ${currentTime})`);
     await attendanceCardPage.close();
@@ -144,13 +144,13 @@ const checkIN = async (params = {}) => {
   const weekday = new Date().getDay();
   const todayTimeSelector = `#tbl_attendance > tbody > tr:nth-child(${weekday + 1}) > td:nth-child(2)`;
   const todayAttendanceTime = await page.$eval(todayTimeSelector, el => el.textContent);
-  console.log(`Detected today's attendance time 👉 ${todayAttendanceTime}`);
+  console.log(`Detected today's attendance time => ${todayAttendanceTime}`);
   if (isEmpty(todayAttendanceTime)) {
     const hitTime = await hitCheckButton(browser, page, CEHCK_TYPE_IDX.IN);
-    console.log(`Hit IN time 👉 ${hitTime}`);
+    console.log(`Hit IN time => ${hitTime}`);
   } else {
     const parts = todayAttendanceTime.split(':');
-    // 0 👉 hour, 1 👉 minute
+    // 0 => hour, 1 => minute
     todayOnTime = [parts[0], parts[1]];
   }
   await browser.close();
@@ -188,14 +188,14 @@ const checkOUTOIN = async (username, password, params = {}) => {
   const weekday = new Date().getDay();
   const todayTimeSelector = `#tbl_attendance > tbody > tr:nth-child(${weekday + 1}) > td:nth-child(2)`;
   const todayAttendanceTime = await page.$eval(todayTimeSelector, el => el.textContent);
-  console.log(`Detected today's attendance time 👉 ${todayAttendanceTime}`);
+  console.log(`Detected today's attendance time => ${todayAttendanceTime}`);
   if (isEmpty(todayAttendanceTime)) {
     console.log(`No today's attendance time, skip the rest process.`);
   } else {
     const offTime = await hitCheckButton(browser, page, CEHCK_TYPE_IDX.OUT);
-    console.log(`Hit OFF time 👉 ${offTime}`);
+    console.log(`Hit OFF time => ${offTime}`);
     const overtimeInTime = await hitCheckButton(browser, page, CEHCK_TYPE_IDX.OIN);
-    console.log(`Hit overtime IN time 👉 ${overtimeInTime}`);
+    console.log(`Hit overtime IN time => ${overtimeInTime}`);
   }
   await browser.close();
 }
@@ -232,12 +232,12 @@ const checkOOUT = async (username, password, params = {}) => {
   const weekday = new Date().getDay();
   const todayOffTimeSelector = `#tbl_attendance > tbody > tr:nth-child(${weekday + 1}) > td:nth-child(3)`;
   const todayOffTime = await page.$eval(todayOffTimeSelector, el => el.textContent);
-  console.log(`Detected today's off time 👉 ${todayOffTime}`);
+  console.log(`Detected today's off time => ${todayOffTime}`);
   if (isEmpty(todayOffTime)) {
     console.log(`No today's off time, skip the rest process.`);
   } else {
     const overtimeOutTime = await hitCheckButton(browser, page, CEHCK_TYPE_IDX.OOUT);
-    console.log(`Hit overtime OUT time 👉 ${overtimeOutTime}`);
+    console.log(`Hit overtime OUT time => ${overtimeOutTime}`);
   }
   await browser.close();
 }
