@@ -5,7 +5,8 @@ const isEmpty = require('lodash/isEmpty');
 
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
-// let todayAttendanceTime = '';
+let todayOnTime = [];
+let todayOffTime = [];
 
 const CEHCK_TYPE_IDX = {
   IN: 1,
@@ -23,24 +24,69 @@ const findNewOpenedPage = async (browser, currentPage) => {
   return await newTarget.page();
 }
 
+const findNowClockTimeArray = async (page) => {
+  const text = await page.$eval('#showbox', el => el.textContent);
+  // record current time in hour/min parts
+  // array, 0 👉 hour, 1 👉 minute
+  return isEmpty(text) ? [] : text?.trim().split(':');
+}
+
 const hitCheckButton = async (browser, page, index) => {
-  let currentTime = '';
-  // will go to another page(tab)
+  // will go to attendance card page(tab)
   await page.click('button#attendanceCardButton');
   // find new opened page
   const attendanceCardPage = findNewOpenedPage(browser, page);
-  // locate the target button
-  const selector = `#cardbtnArea > input:nth-child(${index})`;
-  await attendanceCardPage.waitForSelector(selector);
-  await attendanceCardPage.click(selector);
   // find the timer text
-  const tmp = await attendanceCardPage.$eval('#showbox', el => el.textContent);
-  if (isEmpty(tmp)) {
-    console.warn('Can\'t find #showbox text');
+  let times = findNowClockTimeArray(attendanceCardPage);
+  const currentTime = `${times[0]}:${times[1]}`;
+  console.log(`Current time 👉 ${currentTime}`);
+  if (times.length !== 2 || currentTime.length !== 5) {
+    console.warn(`Can't find #showbox text string length is not 5. (expect XX:XX, got ${currentTime})`);
+    await attendanceCardPage.close();
+    return '';
   } else {
-    const parts = tmp.split(':');
-    currentTime = `${parts[0]}:${parts[1]}`
-    console.log(`Current time 👉 ${currentTime}`);
+    // locate the target button
+    const selector = `#cardbtnArea > input:nth-child(${index})`;
+    await attendanceCardPage.waitForSelector(selector);
+    if (index === CEHCK_TYPE_IDX.IN) {
+      todayOnTime = [times[0], times[1]];
+    } else if (index === CEHCK_TYPE_IDX.OUT) {
+      if (isEmpty(todayOnTime)) {
+        console.warn(`No today ON time record! Skip check-out action.`);
+        await attendanceCardPage.close();
+        return '';
+      }
+      // refresh times array if current server time approaches to 17
+      while (parseInt(times[0]) === 16 && parseInt(times[1]) > 55) {
+        console.warn(`Current is ${times[0]}:${times[1]}, wait to 17:00 ...`);
+        // wait for 1 minute
+        await delay(60 * 1000);
+        times = findNowClockTimeArray(attendanceCardPage);
+      }
+      const nowHour = parseInt(times[0]);
+      if (nowHour < 17) {
+        console.warn(`Current hour(${nowHour}) is less than 17! Skip check-out action.`);
+        await attendanceCardPage.close();
+        return '';
+      } else {
+        const onHour = parseInt(todayOnTime[0]);
+        const onMinutes = parseInt(todayOnTime[1]);
+        if (onHour === 8 && onMinutes < 31) {
+          // only 08:00 ~ 08:30 needs to check
+          let nowMinutes = parseInt(times[1]);
+          while (nowMinutes < onMinutes) {
+            console.warn(`Current time is ${times[0]}:${times[1]}, waiting ...`);
+            // wait for 1 minute
+            await delay(60 * 1000);
+            times = findNowClockTimeArray(attendanceCardPage);
+            nowMinutes = parseInt(times[1]);
+          }
+          console.warn(`Current time is ${times[0]}:${times[1]}, ready to go!`);
+        }
+        todayOffTime = [times[0], times[1]];
+      }
+    }
+    await attendanceCardPage.click(selector);
     // TODO: use waitForSelector should be better ...
     // wait sometime before close
     await delay(5000);
@@ -85,6 +131,10 @@ const checkIN = async (params = {}) => {
   if (isEmpty(todayAttendanceTime)) {
     const hitTime = await hitCheckButton(browser, page, CEHCK_TYPE_IDX.IN);
     console.log(`Hit IN time 👉 ${hitTime}`);
+  } else {
+    const parts = todayAttendanceTime.split(':');
+    // 0 👉 hour, 1 👉 minute
+    todayOnTime = [parts[0], parts[1]];
   }
   await browser.close();
 }
