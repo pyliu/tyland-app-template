@@ -1,36 +1,38 @@
 <template lang="pug">
-.container
-  img(src="/nuxt.png")
-  h2 Hello Nuxtron.
-  p Loaded from the {{ name }}
-  p
-    nuxt-link(to="/about") About
+b-card
+  b-card-title 訊息
+  div(v-for="(message, idx) in messages") {{ idx }}
 </template>
 
 <script>
+import { ipcRenderer } from 'electron';
 export default {
   asyncData ({ req }) {
     return {
       name: process.static ? 'static' : (process.server ? 'server' : 'client'),
     }
+  },
+  computed: {
+    messages () {
+      return this.$store.getters.messages
+    }
+  },
+  created () {
+    this.ipcRendererSetup();
+  },
+  mounted () {
+    console.warn(this.messages);
+  },
+  methods: {
+    ipcRendererSetup() {
+      this.ipcRenderer = ipcRenderer;
+      console.warn('ipcRenderer', this.ipcRenderer);
+      // register main process quit event listener (To send leave channel message after user closed the app)
+      this.ipcRenderer?.on("add-message", (event, msg) => console.log(event, msg));
+    },
   }
 }
 </script>
 
 <style scoped>
-.container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: white;
-  color: black;
-  font-family: "Lucida Console", Monaco, monospace;
-  padding-top: 100px;
-  text-align: center;
-}
-a {
-  color: black;
-}
 </style>

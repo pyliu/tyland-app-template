@@ -24,13 +24,15 @@ const timestamp = (full = false) => {
 const state = () => ({
   windowVisible: false,
   websocket: undefined,
-  timer: null
+  timer: null,
+  messages: []
 })
 
 const getters = {
   windowVisible: state => state.windowVisible,
   websocket: state => state.websocket,
-  timer: state => state.timer
+  timer: state => state.timer,
+  messages: state => state.messages
 }
 
 // only sync operation

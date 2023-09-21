@@ -89,7 +89,7 @@ const askCheckIN  = () => {
   // │    │    └─────────────── hour (0 - 23)
   // │    └──────────────────── minute (0 - 59)
   // └───────────────────────── second (0 - 59, OPTIONAL)
-  const cronConfig = '5 */1 17 * * 1-6';
+  const cronConfig = '15 0 17 * * 1-6';
   console.log(`start check-out/oin job => ${cronConfig}`);
   schedule.scheduleJob(cronConfig, checkOUTOIN);
 })();
