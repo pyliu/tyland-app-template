@@ -7,6 +7,8 @@ const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, mil
 
 let todayOnTime = [];
 let todayOffTime = [];
+let todayOvertimeOnTime = [];
+let todayOvertimeOffTime = [];
 
 const CEHCK_TYPE_IDX = {
   IN: 1,
@@ -85,6 +87,21 @@ const hitCheckButton = async (browser, page, index) => {
         }
         todayOffTime = [times[0], times[1]];
       }
+    } else if (index === CEHCK_TYPE_IDX.OIN) {
+      if (isEmpty(todayOffTime)) {
+        console.warn(`No today OFF time record! Skip check-oin action.`);
+        await attendanceCardPage.close();
+        return '';
+      }
+      // no other business
+      todayOvertimeOnTime = [times[0], times[1]];
+    } else if (index === CEHCK_TYPE_IDX.OOUT) {
+      if (isEmpty(todayOvertimeOnTime)) {
+        console.warn(`No today overtime ON time record! Skip check-oout action.`);
+        await attendanceCardPage.close();
+        return '';
+      }
+      todayOvertimeOffTime = [times[0], times[1]];
     }
     await attendanceCardPage.click(selector);
     // TODO: use waitForSelector should be better ...
