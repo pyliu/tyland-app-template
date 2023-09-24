@@ -1,18 +1,21 @@
-<p align="center"><img src="https://i.imgur.com/PTqXTbx.png"></p>
+# tyland-app
 
-## Usage
+> An electron-nuxt project
 
-```bash
-# create an app
-$ nuxtron init my-app --example with-javascript
+#### Build Setup
 
+``` bash
 # install dependencies
-$ cd my-app
-$ yarn (or `npm install`)
+yarn install
 
-# development mode
-$ yarn dev (or `npm run dev`)
+# serve app with hot reload
+yarn dev
 
-# production build
-$ yarn build (or `npm run build`)
+# build electron application for production
+yarn build
+
 ```
+
+---
+
+This project was generated with [electron-nuxt](https://github.com/michalzaq12/electron-nuxt) v1.8.1 using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://github.com/michalzaq12/electron-nuxt/blob/master/README.md).

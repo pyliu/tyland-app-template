@@ -1,44 +1,42 @@
 {
-  "private": true,
   "name": "tyland-app",
-  "description": "My helper app in tyland",
-  "version": "1.0.0",
-  "author": "pang yu liu <pangyu.liu@gmail.com>",
-  "main": "app/background.js",
+  "version": "0.0.1",
+  "description": "An electron-nuxt project",
+  "main": "./dist/main/index.js",
   "scripts": {
-    "dev": "nuxtron",
-    "build": "nuxtron build",
-    "build:all": "nuxtron build --all",
-    "build:win32": "nuxtron build --win --ia32",
-    "build:win64": "nuxtron build --win --x64",
-    "build:mac": "nuxtron build --mac --x64",
-    "build:linux": "nuxtron build --linux"
+    "dev": "node .electron-nuxt/dev.js",
+    "build": "node .electron-nuxt/build.js",
+    "preinstall": "node .electron-nuxt/check-engines.js",
+    "postinstall": "electron-builder install-app-deps "
   },
-  "dependencies": {
-    "@nuxt/components": "^2.1.2",
-    "@nuxtjs/axios": "^5.12.2",
-    "@nuxtjs/localforage": "^1.1.0",
-    "@nuxtjs/proxy": "^2.0.1",
-    "@nuxtjs/style-resources": "^1.0.0",
-    "axios": "^1.5.0",
-    "bootstrap": "^4.5.2",
-    "bootstrap-vue": "^2.18.1",
-    "electron-serve": "^1.0.0",
-    "electron-store": "^6.0.1",
-    "lodash": "^4.17.21",
-    "node-notifier": "^10.0.1",
-    "node-schedule": "^2.1.1",
-    "puppeteer": "^21.2.1",
-    "qs": "^6.11.2"
+  "keywords": [],
+  "author": "pyliu <3634168+pyliu@users.noreply.github.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/michalzaq12/electron-nuxt/blob/master/README.md",
+  "engines" : {
+    "node" : ">=14.14.9"
+  },
+  "resolutions": {
+    "@types/node": "14.14.9"
   },
   "devDependencies": {
-    "electron": "^26.2.1",
-    "electron-builder": "^22.9.1",
-    "node-sass": "^8.0.0",
-    "nuxt": "^2.14.7",
-    "nuxtron": "^0.3.1",
-    "pug": "^3.0.2",
-    "pug-plain-loader": "^1.1.0",
-    "sass-loader": "^10.4.1"
+    "@xpda-dev/core": "^0.1.6",
+    "@xpda-dev/electron-launcher": "^0.3.0",
+    "@xpda-dev/electron-builder": "^0.2.1",
+    "@xpda-dev/webpack-step": "^0.1.6",
+    "deepmerge": "^4.2.2",
+    "@fortawesome/fontawesome-free": "5.15.3",
+    "cross-env": "^7.0.3",
+    "electron": "^16.0.5",
+    "electron-builder": "^22.14.5",
+    "nuxt": "^2.15.8",
+    "node-sass": "^6.0.1",
+    "sass-loader": "12.4.0",
+    "electron-devtools-installer": "^3.2.0",
+    "roboto-fontface": "^0.10.0",
+    "vuetify": "^2.5.10",
+    "@nuxtjs/vuetify": "^1.12.1",
+    "webpack": "^4.46.0",
+    "webpack-node-externals": "^3.0.0"
   }
 }
