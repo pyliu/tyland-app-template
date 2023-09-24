@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node .electron-nuxt/dev.js",
     "build": "node .electron-nuxt/build.js",
+    "build:win": "node .electron-nuxt/build.js --win",
     "preinstall": "node .electron-nuxt/check-engines.js",
     "postinstall": "electron-builder install-app-deps "
   },
@@ -27,15 +28,13 @@
     "deepmerge": "^4.2.2",
     "@fortawesome/fontawesome-free": "5.15.3",
     "cross-env": "^7.0.3",
-    "electron": "^16.0.5",
+    "electron": "^26.2.2",
     "electron-builder": "^22.14.5",
+    "element-ui": "2.15.6",
     "nuxt": "^2.15.8",
     "node-sass": "^6.0.1",
     "sass-loader": "12.4.0",
     "electron-devtools-installer": "^3.2.0",
-    "roboto-fontface": "^0.10.0",
-    "vuetify": "^2.5.10",
-    "@nuxtjs/vuetify": "^1.12.1",
     "webpack": "^4.46.0",
     "webpack-node-externals": "^3.0.0"
   }
