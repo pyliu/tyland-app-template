@@ -1,29 +1,29 @@
-<template>
-  <div class="e-nuxt-container">
-    <div class="e-nuxt-content">
-      <div class="e-nuxt-logo">
-        <img style="max-width: 100%;" src="~assets/electron-nuxt.png">
-      </div>
-      <div class="e-nuxt-system-info">
-        <system-information />
-      </div>
-    </div>
-    <div class="e-nuxt-links">
-      <div class="e-nuxt-button" @click="openURL('https://github.com/michalzaq12/electron-nuxt')">
-        Github
-      </div>
-      <div class="e-nuxt-button" @click="openURL('https://nuxtjs.org/guide')">
-        Nuxt.js
-      </div>
-      <div class="e-nuxt-button" @click="openURL('https://electronjs.org/docs')">
-        Electron.js
-      </div>
-    </div>
-  </div>
+<template lang="pug">
+.e-nuxt-container
+  .e-nuxt-content
+    .e-nuxt-logo
+      img(style='max-width: 100%;' src='~assets/electron-nuxt.png')
+    .e-nuxt-system-info
+      system-information.
+        
+        
+  .e-nuxt-links
+    .e-nuxt-button(@click='openURL(\'https://github.com/michalzaq12/electron-nuxt\')').
+      
+      Github
+      
+    .e-nuxt-button(@click='openURL(\'https://nuxtjs.org/guide\')').
+      
+      Nuxt.js
+      
+    .e-nuxt-button(@click='openURL(\'https://electronjs.org/docs\')').
+      
+      Electron.js
+      
 </template>
 
 <script>
-import SystemInformation from '@/components/SystemInformation.vue'
+import SystemInformation from '@/components/SystemInformation.vue';
 
 export default {
   name: 'IndexPage',
