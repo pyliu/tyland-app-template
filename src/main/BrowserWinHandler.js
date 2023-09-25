@@ -24,6 +24,8 @@ export default class BrowserWinHandler {
       app.on('second-instance', (evt, cli, workingDir) => {
         if (this.browserWindow) {
           this.browserWindow.isMinimized() && this.browserWindow.restore()
+          this.browserWindow.setAlwaysOnTop(true)
+          this.browserWindow.show()
           this.browserWindow.focus()
         }
       })
@@ -58,6 +60,16 @@ export default class BrowserWinHandler {
         }
       }
     )
+    // disable the menu bar
+    this.browserWindow.setMenuBarVisibility(false)
+    
+    this.browserWindow.on('focus', () => {
+      // when browser window focused, set always on top attr to false
+      this.browserWindow.setAlwaysOnTop(false)
+      // stop flashing frame
+      this.browserWindow.flashFrame(false)
+    })
+
     this.browserWindow.on('closed', () => {
       // Dereference the window object
       this.browserWindow = null
