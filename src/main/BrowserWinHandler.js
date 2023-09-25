@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { EventEmitter } from 'events'
 import { BrowserWindow, app } from 'electron'
+import { EventEmitter } from 'events'
 const DEV_SERVER_URL = process.env.DEV_SERVER_URL
 const isProduction = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
@@ -19,20 +19,31 @@ export default class BrowserWinHandler {
   }
 
   _createInstance () {
-    // This method will be called when Electron has finished
-    // initialization and is ready to create browser windows.
-    // Some APIs can only be used after this event occurs.
-    if (app.isReady()) this._create()
-    else {
-      app.once('ready', () => {
-        this._create()
+    // make global single instance
+    if (app.requestSingleInstanceLock()) {
+      app.on('second-instance', (evt, cli, workingDir) => {
+        if (this.browserWindow) {
+          this.browserWindow.isMinimized() && this.browserWindow.restore()
+          this.browserWindow.focus()
+        }
       })
+      // This method will be called when Electron has finished
+      // initialization and is ready to create browser windows.
+      // Some APIs can only be used after this event occurs.
+      if (app.isReady()) this._create()
+      else {
+        app.once('ready', () => {
+          this._create()
+        })
+      }
+  
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
+      if (!this.allowRecreate) return
+      app.on('activate', () => this._recreate())
+    } else {
+      app.quit()
     }
-
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (!this.allowRecreate) return
-    app.on('activate', () => this._recreate())
   }
 
   _create () {
