@@ -23,8 +23,11 @@ export default class BrowserWinHandler {
     if (app.requestSingleInstanceLock()) {
       app.on('second-instance', (evt, cli, workingDir) => {
         if (this.browserWindow) {
+          // flashing frame on taskbar
+          this.browserWindow.flashFrame(true)
           this.browserWindow.isMinimized() && this.browserWindow.restore()
           this.browserWindow.setAlwaysOnTop(true)
+          // show the window from hiding (tray)
           this.browserWindow.show()
           this.browserWindow.focus()
         }
