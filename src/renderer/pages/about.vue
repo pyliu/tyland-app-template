@@ -2,7 +2,8 @@
 #app
   img.mt-2.img-fluid(src="~/assets/electron-nuxt.png")
   .my-2: el-button(@click="startHacking") 開始
-  b-container.fixed-bottom: system-information
+  b-container.fixed-bottom
+    system-information
 </template>
 
 <script>

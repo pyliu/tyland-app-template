@@ -9,6 +9,9 @@ export default {
   name: 'IndexPage',
   components: {},
   data: () =>({}),
+  mounted () {
+
+  },
   methods: {
     openURL (url) {
       window.open(url)
