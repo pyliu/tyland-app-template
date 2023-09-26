@@ -3,8 +3,6 @@
  * This default configuration can be overwritten in this file
  * @link {https://nuxtjs.org/guide/configuration/}
  */
-
-
 module.exports = {
   ssr: false,
   target: 'static',
@@ -12,9 +10,7 @@ module.exports = {
     title: 'tyland-app-template',
     meta: [{ charset: "utf-8" }]
   },
-  loading: {
-    color: '#5cb85c'
-  },
+  loading: { color: '#5cb85c' },
   css: ['@/assets/scss/custom.scss'],
   plugins: [
     '~/plugins/bootstrap.js',
@@ -40,8 +36,8 @@ module.exports = {
   },
   // use these settings to use custom css
   bootstrapVue: {
-    bootstrapCSS: false,
-    bootstrapVueCSS: false,
+    bootstrapCSS: true,
+    bootstrapVueCSS: true,
     icons: true,
   },
 };

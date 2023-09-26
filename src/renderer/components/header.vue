@@ -13,24 +13,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .main-header {
   height: 50px;
   display: flex;
-  background-color: #364758;
+  background-color: #586e84;
 }
 
-nav{
+nav {
   width: 100%;
   display: flex;
   justify-content: center;
-}
-
-nav div{
-  height: 100%;
-  margin: 0 20px;
-  display: flex;
   align-items: center;
+  div {
+    height: 100%;
+    margin: 0 20px;
+    display: flex;
+    align-items: center;
+  }
 }
 
 a {
@@ -40,9 +40,11 @@ a {
   font-weight: 100;
   text-decoration: underline;
   text-transform: uppercase;
+  &:hover {
+    opacity: 0.9;
+    font-size: large;
+    position: relative;
+  }
 }
 
-a:hover{
-  opacity: 0.9;
-}
 </style>
