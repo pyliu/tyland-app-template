@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   app-header
-  b-container
+  b-container.full-h
     nuxt
 </template>
 
@@ -14,8 +14,11 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 body {
   margin: 0 !important;
+}
+.full-h {
+  height: calc(100vh - 50px);
 }
 </style>
