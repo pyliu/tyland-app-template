@@ -9,19 +9,37 @@ module.exports = {
   ssr: false,
   target: 'static',
   head: {
-    title: 'tyland-app',
+    title: 'tyland-app-template',
     meta: [{ charset: "utf-8" }]
   },
-  loading: false,
+  loading: {
+    color: '#5cb85c'
+  },
+  css: ['@/assets/scss/custom.scss'],
   plugins: [
+    '~/plugins/bootstrap.js',
     {ssr: true, src: '@/plugins/icons.js'},
-    
     {ssr: true, src: '@/plugins/element.js'},
   ],
+  // Auto import components (https://go.nuxtjs.dev/config-components)
+  components: true,
   buildModules: [
     
   ],
   modules: [
-    
+    'bootstrap-vue/nuxt'
   ],
+  module: {
+    rules: [
+      {
+        test: /\.s[ac]ss$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
+  // use these settings to use custom css
+  bootstrapVue: {
+    bootstrapCSS: false,
+    icons: true,
+  },
 };

@@ -31,12 +31,16 @@
     "electron-builder": "^22.14.5",
     "electron-devtools-installer": "^3.2.0",
     "element-ui": "2.15.6",
-    "node-sass": "^6.0.1",
     "nuxt": "^2.15.8",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
-    "sass-loader": "12.4.0",
+    "sass": "^1.68.0",
+    "sass-loader": "^10.0.0",
     "webpack": "^4.46.0",
     "webpack-node-externals": "^3.0.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.6.2",
+    "bootstrap-vue": "^2.23.1"
   }
 }

@@ -1,59 +1,23 @@
-<template>
-  <div>
-    <div class="title">
-      Information
-    </div>
-    <div class="items">
-      <div class="item">
-        <div class="name">
-          Nuxt.js:
-        </div>
-        <div class="value">
-          {{ nuxt }}
-        </div>
-      </div>
-      <div class="item">
-        <div class="name">
-          Vue.js:
-        </div>
-        <div class="value">
-          {{ vue }}
-        </div>
-      </div>
-      <div class="item">
-        <div class="name">
-          Electron:
-        </div>
-        <div class="value">
-          {{ electron }}
-        </div>
-      </div>
-      <div class="item">
-        <div class="name">
-          Node:
-        </div>
-        <div class="value">
-          {{ node }}
-        </div>
-      </div>
-      <div class="item">
-        <div class="name">
-          Chrome:
-        </div>
-        <div class="value">
-          {{ chrome }}
-        </div>
-      </div>
-      <div class="item">
-        <div class="name">
-          Platform:
-        </div>
-        <div class="value">
-          {{ platform }}
-        </div>
-      </div>
-    </div>
-  </div>
+<template lang="pug">
+.items.d-flex.justify-content-between.flex-wrap
+  .item
+    .name Nuxt.js:
+    .value {{ nuxt }}
+  .item
+    .name Vue.js:
+    .value {{ vue }}
+  .item
+    .name Electron:
+    .value {{ electron }}
+  .item
+    .name Node:
+    .value {{ node }}
+  .item
+    .name Chrome:
+    .value {{ chrome }}
+  .item
+    .name Platform:
+    .value {{ platform }}
 </template>
 
 <script>
@@ -71,27 +35,20 @@ export default {
 }
 </script>
 
-<style scoped>
-    .title {
-        color: #364758;
-        font-size: 1.5em;
-        letter-spacing: .25px;
-        margin-top: 10px;
+<style lang="scss" scoped>
+.items {
+  margin-top: 8px;
+  .item {
+    display: flex;
+    margin: 0 6px 6px 0;
+    .name {
+      color: #6a6a6a;
+      margin-right: 6px;
     }
-    .items {
-        margin-top: 8px;
+    .value {
+      color: #364758;
+      font-weight: bold;
     }
-    .item {
-        display: flex;
-        margin-bottom: 6px;
-    }
-    .item .name {
-        color: #6a6a6a;
-        margin-right: 6px;
-    }
-
-    .item .value {
-        color: #364758;
-        font-weight: bold;
-    }
+  }
+}
 </style>

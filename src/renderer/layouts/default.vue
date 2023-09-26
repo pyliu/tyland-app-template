@@ -1,12 +1,12 @@
-<template>
-  <div>
-    <app-header />
-    <nuxt />
-  </div>
+<template lang="pug">
+div
+  app-header
+  b-container
+    nuxt
 </template>
 
 <script>
-import appHeader from '@/components/header'
+import appHeader from '@/components/header';
 
 export default {
   name: 'DefaultLayout',
