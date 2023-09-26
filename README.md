@@ -1,4 +1,4 @@
-# tyland-app
+# tyland-app-template
 
 > An electron-nuxt project
 
