@@ -97,7 +97,7 @@ export default class BrowserWinHandler {
     this.tray.setContextMenu(Menu.buildFromTemplate([
       { 
         label: '關閉程式',
-        click: () => { app.exit() },
+        click: () => { app.exit() },  // use quit() can not close the app ...
         icon: nativeImage.createFromPath(path.join(process.resourcesPath, 'gartoon-stop.ico')).resize({ width: 16, height: 16 })
       },
     ]));
