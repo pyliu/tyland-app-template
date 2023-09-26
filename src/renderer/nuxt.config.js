@@ -27,7 +27,8 @@ module.exports = {
     
   ],
   modules: [
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/localforage'
   ],
   module: {
     rules: [
@@ -40,6 +41,7 @@ module.exports = {
   // use these settings to use custom css
   bootstrapVue: {
     bootstrapCSS: false,
+    bootstrapVueCSS: false,
     icons: true,
   },
 };

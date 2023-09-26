@@ -2,18 +2,13 @@
 #app
   img.img-fluid(src="~/assets/monitoring.jpg")
   .my-2: el-button(@click="startHacking") 開始
-  system-information
 </template>
 
 <script>
 export default {
   name: 'IndexPage',
   components: {},
-  data () {
-    return {
-      externalContent: ''
-    }
-  },
+  data: () =>({}),
   methods: {
     openURL (url) {
       window.open(url)

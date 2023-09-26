@@ -4,7 +4,7 @@ header.main-header
     div
       nuxt-link(to="/", exact) 首頁
     div
-      nuxt-link(to="/about", exact) 說明
+      nuxt-link(to="/about", exact) 關於
 </template>
 
 <script>

@@ -66,7 +66,6 @@ export default class BrowserWinHandler {
       // stop flashing frame
       this.browserWindow.flashFrame(false)
     })
-
     // close to tray
     this.browserWindow.on('close', (event) => {
       event.returnValue = false
@@ -79,6 +78,11 @@ export default class BrowserWinHandler {
       this.browserWindow = null
     })
     
+    this.browserWindow.once('ready-to-show', () => {
+      // if you want to start as tray ... comment next line
+      this.browserWindow.show()
+    })
+
     this._createTray()
 
     this._eventEmitter.emit('created')
