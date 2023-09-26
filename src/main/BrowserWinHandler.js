@@ -1,6 +1,7 @@
 /* eslint-disable */
-import { BrowserWindow, app } from 'electron'
+import { BrowserWindow, Menu, Tray, app, nativeImage } from 'electron'
 import { EventEmitter } from 'events'
+import path from 'path'
 const DEV_SERVER_URL = process.env.DEV_SERVER_URL
 const isProduction = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
@@ -15,6 +16,7 @@ export default class BrowserWinHandler {
     this.allowRecreate = allowRecreate
     this.options = options
     this.browserWindow = null
+    this.tray = null
     this._createInstance()
   }
 
@@ -22,15 +24,7 @@ export default class BrowserWinHandler {
     // make global single instance
     if (app.requestSingleInstanceLock()) {
       app.on('second-instance', (evt, cli, workingDir) => {
-        if (this.browserWindow) {
-          // flashing frame on taskbar
-          this.browserWindow.flashFrame(true)
-          this.browserWindow.isMinimized() && this.browserWindow.restore()
-          this.browserWindow.setAlwaysOnTop(true)
-          // show the window from hiding (tray)
-          this.browserWindow.show()
-          this.browserWindow.focus()
-        }
+        this.showMainWindow()
       })
       // This method will be called when Electron has finished
       // initialization and is ready to create browser windows.
@@ -73,11 +67,47 @@ export default class BrowserWinHandler {
       this.browserWindow.flashFrame(false)
     })
 
+    // close to tray
+    this.browserWindow.on('close', (event) => {
+      event.returnValue = false
+      event.preventDefault()
+      this.browserWindow && this.browserWindow.hide()
+    })
+
     this.browserWindow.on('closed', () => {
       // Dereference the window object
       this.browserWindow = null
     })
+    
+    this._createTray()
+
     this._eventEmitter.emit('created')
+  }
+
+  _createTray () {
+    /**
+     * Electron-nuxt (1.7.0) improves a global variable named process.resourcesPath (opens new window)
+     * that will yield a proper path to the src/extraResources in renderer and main process. 
+     * In this directory you can store all necessary resources with reliable path to them, 
+     * but you must treat all assets in this directory as read only.
+     * (If you need also write access, use app.getPath('appData') (opens new window)instead).
+     */
+    this.tray = new Tray(`${process.resourcesPath}/tray.ico`);
+    this.tray.setToolTip(`tyland office helper ${app.getVersion()}`);
+    this.tray.setContextMenu(Menu.buildFromTemplate([
+      { 
+        label: '關閉程式',
+        click: () => { app.exit() },
+        icon: nativeImage.createFromPath(path.join(process.resourcesPath, 'gartoon-stop.ico')).resize({ width: 16, height: 16 })
+      },
+    ]));
+    this.tray.on('click', () => {
+      // Do something when the tray icon is clicked.
+      this.toogleMainWindow()
+    });
+    app.on('window-all-closed', () => {
+      this.tray && this.tray.destroy()
+    })
   }
 
   _recreate () {
@@ -115,5 +145,26 @@ export default class BrowserWinHandler {
     return new Promise(resolve => {
       this.onCreated(() => resolve(this.browserWindow))
     })
+  }
+
+  showMainWindow () {
+    if (this.browserWindow) {
+      this.browserWindow.flashFrame(true)
+      this.browserWindow.isMinimized() && this.browserWindow.restore()
+      this.browserWindow.setAlwaysOnTop(true)
+      // show the window from hiding (tray)
+      this.browserWindow.show()
+      this.browserWindow.focus()
+    }
+  }
+
+  hideMainWindow () {
+    this.browserWindow && this.browserWindow.hide()
+  }
+
+  toogleMainWindow () {
+    if (this.browserWindow) {
+      this.browserWindow.isVisible() ? this.hideMainWindow() : this.showMainWindow()
+    }
   }
 }

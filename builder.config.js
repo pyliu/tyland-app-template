@@ -2,7 +2,7 @@ const ICONS_DIR = 'build/icons/'
 
 const windowsOS = {
   win: {
-    icon: ICONS_DIR + 'win-browser-icon.ico',
+    icon: ICONS_DIR + 'gartoon-info.ico',
     publisherName: 'Elegantthemes',
     target: 'nsis'
   },
