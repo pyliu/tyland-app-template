@@ -10,7 +10,7 @@ export default class IPCHandler {
     const type = payload.type
     switch (type) {
       default:
-        console.warn(`${type} not supportrd`)
+        console.warn(`${type} not supported!`)
     }
   }
 }
