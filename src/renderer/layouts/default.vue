@@ -19,6 +19,6 @@ body {
   margin: 0 !important;
 }
 .full-h {
-  height: calc(100vh - 50px);
+  height: calc(100vh - 60px);
 }
 </style>
