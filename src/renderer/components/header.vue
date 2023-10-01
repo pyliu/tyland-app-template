@@ -4,7 +4,7 @@ header.main-header
     div
       nuxt-link(to="/", exact) #[i.el-icon-s-home] 首頁
     div
-      nuxt-link(to="/about", exact) #[i.el-icon-s-tools] 設定
+      nuxt-link(to="/setting", exact) #[i.el-icon-s-tools] 設定
 </template>
 
 <script>
