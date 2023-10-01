@@ -1,8 +1,7 @@
 <template lang="pug">
 div
   app-header
-  b-container.full-h
-    nuxt
+  nuxt.full-h
 </template>
 
 <script>
