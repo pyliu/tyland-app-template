@@ -2,9 +2,9 @@
 header.main-header
   nav
     div
-      nuxt-link(to="/", exact) 首頁
+      nuxt-link(to="/", exact) #[i.el-icon-s-home] 首頁
     div
-      nuxt-link(to="/about", exact) 關於
+      nuxt-link(to="/about", exact) #[i.el-icon-s-tools] 設定
 </template>
 
 <script>
