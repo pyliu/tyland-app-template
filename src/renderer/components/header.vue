@@ -43,11 +43,11 @@ nav {
     color: white;
     font-size: 1rem;
     font-weight: 100;
-    text-decoration: underline;
+    text-decoration: none;
     text-transform: uppercase;
     &:hover {
       font-weight: bolder;
-      font-size: large;
+      font-size: larger;
       position: relative;
       animation: flicker 0.5s ease alternate infinite;
     }
