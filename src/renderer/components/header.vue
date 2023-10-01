@@ -14,12 +14,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@keyframes flicker {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: .25;
+  }
+}
 .main-header {
   height: 50px;
   display: flex;
-  background-color: #586e84;
+  background-color: #33ae54;
 }
-
 nav {
   width: 100%;
   display: flex;
@@ -31,20 +38,19 @@ nav {
     display: flex;
     align-items: center;
   }
-}
-
-a {
-  font-family: Helvetica, sans-serif;
-  color: white;
-  font-size: 1rem;
-  font-weight: 100;
-  text-decoration: underline;
-  text-transform: uppercase;
-  &:hover {
-    opacity: 0.9;
-    font-size: large;
-    position: relative;
+  a {
+    font-family: Helvetica, sans-serif;
+    color: white;
+    font-size: 1rem;
+    font-weight: 100;
+    text-decoration: underline;
+    text-transform: uppercase;
+    &:hover {
+      font-weight: bolder;
+      font-size: large;
+      position: relative;
+      animation: flicker 0.5s ease alternate infinite;
+    }
   }
 }
-
 </style>
