@@ -17,6 +17,12 @@ export default {
       window.open(url)
     },
     startHacking () {
+      // invoke to main process
+      const { ipcRenderer } = require('electron')
+      ipcRenderer.invoke('command', {
+        type: 'version'
+      }).then(msg => console.log(msg))
+
       this.$notify({
         title: '這是標題',
         type: 'success',
