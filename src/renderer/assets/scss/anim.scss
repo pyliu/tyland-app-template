@@ -1,0 +1,20 @@
+/*
+ * page transition default string is "page"
+ * https://v2.nuxt.com/docs/components-glossary/transition/
+ */
+ .page-move, /* apply transition to moving elements */
+ .page-enter-active,
+ .page-leave-active {
+   transition: all 0.5s ease;
+ }
+ .page-enter-from,
+ .page-leave-to {
+   opacity: 0;
+   transform: translateX(30px);
+ }
+ /* ensure leaving items are taken out of layout flow so that moving
+    animations can be calculated correctly. */
+ .page-leave-active {
+   position: absolute;
+ }
+ 

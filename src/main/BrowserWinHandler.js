@@ -2,6 +2,9 @@
 import { BrowserWindow, Menu, Tray, app, nativeImage } from 'electron'
 import { EventEmitter } from 'events'
 import path from 'path'
+
+import IPCHandler from './IPCHandler'
+
 const DEV_SERVER_URL = process.env.DEV_SERVER_URL
 const isProduction = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
@@ -86,6 +89,9 @@ export default class BrowserWinHandler {
     this._createTray()
 
     this._eventEmitter.emit('created')
+
+    // handler for IPC from renderer
+    this.ipcHandler = new IPCHandler()
   }
 
   _createTray () {
