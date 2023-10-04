@@ -13,7 +13,7 @@ class Store {
     // We'll use the `configName` property to set the file name and path.join to bring it all together as a string
     this.path = path.join(userDataPath, opts.configName + '.json');
     if (!fse.pathExistsSync(this.path)) {
-      fse.writeFileSync(this.path, opts.defaults);
+      fse.writeJsonSync(this.path, opts.defaults);
     }
     this.data = fse.readJsonSync(this.path);
   }
@@ -24,7 +24,7 @@ class Store {
   
   set(key, val) {
     this.data[key] = val;
-    fse.writeFileSync(this.path, this.data);
+    fse.writeJsonSync(this.path, this.data);
   }
 }
 
