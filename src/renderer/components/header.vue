@@ -7,9 +7,7 @@ header.main-header: nav
   <script>
   export default {
     name: 'HeaderComponent',
-    mounted () {
-      console.warn(this.$route)
-    },
+    mounted () {},
     methods: {
       active (url) {
         if (this.$route.path === url) {
