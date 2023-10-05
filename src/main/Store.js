@@ -25,6 +25,12 @@ class Store {
   set(key, val) {
     this.data[key] = val;
     fse.writeJsonSync(this.path, this.data);
+    return this.path;
+  }
+
+  reload () {
+    this.data = fse.readJsonSync(this.path);
+    return this.data;
   }
 }
 
